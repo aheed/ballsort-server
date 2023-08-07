@@ -1,6 +1,12 @@
+using BallSortServer.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<StateService>();
+builder.Services.AddSingleton<IStateReader>(x => x.GetRequiredService<StateService>());
+builder.Services.AddSingleton<IStateUpdater>(x => x.GetRequiredService<StateService>());
+builder.Services.AddSingleton<ISubscriptions>(x => x.GetRequiredService<StateService>());
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
