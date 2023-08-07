@@ -6,5 +6,5 @@ namespace BallSortServer.Services;
 
 public interface IPushClient
 {
-    void UpdateState(BallSortStateModel newState);
+    Task UpdateState(BallSortStateModel newState);
 }
