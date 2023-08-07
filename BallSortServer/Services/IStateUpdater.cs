@@ -6,5 +6,5 @@ namespace BallSortServer.Services;
 
 public interface IStateUpdater
 {
-    void UpdateState(BallSortStateModel newState);
+    Task UpdateState(BallSortStateModel newState, string userId="default");
 }

@@ -9,11 +9,13 @@ public class WebSocketMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ISubscriptionsMgr _subscriptionsMgr;
+    private readonly ILogger<WebSocketMiddleware> _logger;
 
-    public WebSocketMiddleware(RequestDelegate next, ISubscriptionsMgr subscriptionsMgr)
+    public WebSocketMiddleware(RequestDelegate next, ISubscriptionsMgr subscriptionsMgr, ILogger<WebSocketMiddleware> logger)
     {
         _next = next;
         _subscriptionsMgr = subscriptionsMgr;
+        _logger = logger;
     }
 
     private async Task HandleWebSocket(HttpContext context)
@@ -29,6 +31,9 @@ public class WebSocketMiddleware
 
         // Initialize containers for reading
         bool connectionAlive = true;
+        var pushClient = new PushClient(socket, _logger);
+        _subscriptionsMgr.AddSubscriber("default", pushClient); //temp
+
         List<byte> webSocketPayload = new List<byte>(1024 * 4); // 4 KB initial capacity
         byte[] tempMessage = new byte[1024 * 4]; // Message reader
 
@@ -66,6 +71,7 @@ public class WebSocketMiddleware
             {
                 // 4. Close the connection
                 connectionAlive = false;
+                _subscriptionsMgr.RemoveSubscriber("default", pushClient); //todo: replace "default"
             }
         }
 
