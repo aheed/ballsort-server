@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using BallSortServer.Models;
 
-namespace BallSortServer.Services;
+namespace WebSocket.Core;
 
 public interface IPushClient
 {

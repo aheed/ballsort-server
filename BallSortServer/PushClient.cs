@@ -5,7 +5,7 @@ using System.Text;
 using System.Net.WebSockets;
 using System.Text.Json;
 
-namespace BallSortServer.Services;
+namespace WebSocket.Core;
 
 public class PushClient : IPushClient
 {
