@@ -4,7 +4,7 @@ using BallSortServer.Models;
 
 namespace BallSortServer.Services;
 
-public interface ISubscriptions
+public interface ISubscriptionsMgr
 {
     void AddSubscriber(string id);
     void RemoveSubscriber(string id);

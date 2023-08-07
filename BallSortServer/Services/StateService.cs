@@ -4,7 +4,7 @@ using BallSortServer.Models;
 
 namespace BallSortServer.Services;
 
-public class StateService : IStateReader, IStateUpdater, ISubscriptions
+public class StateService : IStateReader, IStateUpdater, ISubscriptionsMgr
 {
     private readonly object _lock = new();
     private readonly ILogger<StateService> _logger;
