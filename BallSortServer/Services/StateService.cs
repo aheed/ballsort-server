@@ -9,7 +9,6 @@ public class StateService : IStateReader, IStateUpdater, ISubscriptionsMgr
 {
     private readonly object _lock = new();
     private readonly ILogger<StateService> _logger;
-    //private BallSortStateModel _currentState = new(); // todo: make it an instance per user
     private readonly ClientCollection _pushClients = new();
     private readonly Dictionary<string, BallSortStateModel> _states = new();
 
@@ -18,7 +17,7 @@ public class StateService : IStateReader, IStateUpdater, ISubscriptionsMgr
         _logger = logger;
     }
 
-    private static BallSortStateModel GetDefaultState() => new(3, 5, 0, 0);
+    private static BallSortStateModel GetDefaultState() => new() { NofRows = 3, NofCols = 5, PosX = 0, PosY = 0};
 
     // IStateReader implementation
     public BallSortStateModel GetState(string userId)
@@ -38,7 +37,6 @@ public class StateService : IStateReader, IStateUpdater, ISubscriptionsMgr
 
         lock(_lock)
         {
-            //_currentState = newState;
             _states[userId] = newState;
             pushClients = _pushClients.GetClients(userId);
         }

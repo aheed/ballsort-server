@@ -18,10 +18,16 @@ public class ApiController : Controller
     }
 
     [HttpPost]
-    public IActionResult Update([FromBody] BallSortStateModel newState)
-    {    
-        _logger.LogInformation("Got an update request: {cols}", newState.NofCols);
+    public IActionResult Update([FromBody] BallSortStateUpdateMsg? updateMsg)
+    {   
+        _logger.LogInformation("Got an update request");
+        if(updateMsg == null)
+        {
+            return BadRequest("Invalid format\n");
+        }
+
+        _logger.LogInformation("Got an update request: {cols}", updateMsg.State.NofCols);
         //return Json("Got it!");
-        return Json(newState);
+        return Json(updateMsg);
     }
 }
