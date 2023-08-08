@@ -24,7 +24,12 @@ public class WebSocketMiddleware
 
         // Get the underlying socket
         using var socket = await context.WebSockets.AcceptWebSocketAsync();
-                
+        
+        if (!context.Request.Query.TryGetValue("userid", out var userId) || String.IsNullOrEmpty(userId))
+        {
+            userId = "default";
+        }
+
         // 1. Extract useful information from HttpContext
         string requestRoute = context.Request.Path.ToString();
         var token = context.Request.Query["token"];
@@ -32,7 +37,8 @@ public class WebSocketMiddleware
         // Initialize containers for reading
         bool connectionAlive = true;
         var pushClient = new PushClient(socket, _logger);
-        await _subscriptionsMgr.AddSubscriber("default", pushClient); //temp
+        Console.WriteLine(userId);
+        await _subscriptionsMgr.AddSubscriber(userId.ToString(), pushClient);
 
         List<byte> webSocketPayload = new(1024 * 4); // 4 KB initial capacity
         byte[] tempMessage = new byte[1024 * 4]; // Message reader
