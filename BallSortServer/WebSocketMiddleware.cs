@@ -32,9 +32,9 @@ public class WebSocketMiddleware
         // Initialize containers for reading
         bool connectionAlive = true;
         var pushClient = new PushClient(socket, _logger);
-        _subscriptionsMgr.AddSubscriber("default", pushClient); //temp
+        await _subscriptionsMgr.AddSubscriber("default", pushClient); //temp
 
-        List<byte> webSocketPayload = new List<byte>(1024 * 4); // 4 KB initial capacity
+        List<byte> webSocketPayload = new(1024 * 4); // 4 KB initial capacity
         byte[] tempMessage = new byte[1024 * 4]; // Message reader
 
         // 2. Connection loop

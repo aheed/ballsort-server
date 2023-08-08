@@ -1,10 +1,3 @@
 namespace BallSortServer.Models;
 
-public class BallSortStateModel
-{
-    public int NofRows { get; set; }
-    public int NofCols { get; set; }
-    
-    public int PosX { get; set; }
-    public int PosY { get; set; }
-}
+public record BallSortStateModel(int NofRows, int NofCols, int PosX, int PosY);

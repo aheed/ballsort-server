@@ -6,5 +6,5 @@ namespace BallSortServer.Services;
 
 public interface IStateReader
 {
-    BallSortStateModel GetState();
+    BallSortStateModel GetState(string userId);
 }

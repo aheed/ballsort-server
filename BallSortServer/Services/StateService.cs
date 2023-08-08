@@ -9,7 +9,7 @@ public class StateService : IStateReader, IStateUpdater, ISubscriptionsMgr
 {
     private readonly object _lock = new();
     private readonly ILogger<StateService> _logger;
-    private BallSortStateModel _currentState = new(); // todo: make it an instance per user
+    //private BallSortStateModel _currentState = new(); // todo: make it an instance per user
     private readonly ClientCollection _pushClients = new();
     private readonly Dictionary<string, BallSortStateModel> _states = new();
 
@@ -18,8 +18,18 @@ public class StateService : IStateReader, IStateUpdater, ISubscriptionsMgr
         _logger = logger;
     }
 
+    private BallSortStateModel GetDefaultState() => new(3, 5, 0, 0);
+
     // IStateReader implementation
-    public BallSortStateModel GetState() => _currentState;
+    public BallSortStateModel GetState(string userId)
+    {
+        if (_states.TryGetValue(userId, out BallSortStateModel? currentState))
+        {
+            return currentState;
+        }
+
+        return GetDefaultState();
+    }
     
     // IStateUpdater implementation
     public async Task UpdateState(BallSortStateModel newState, string userId)
@@ -45,13 +55,10 @@ public class StateService : IStateReader, IStateUpdater, ISubscriptionsMgr
         lock(_lock) 
         {
             _pushClients.Add(id, pushClient);
-            _states.TryGetValue(id, out currentState);
+            currentState = GetState(id);
         }
 
-        if (currentState != null) 
-        {
-            await pushClient.UpdateState(_currentState);
-        }
+        await pushClient.UpdateState(currentState);
     }
 
     public void RemoveSubscriber(string id, IPushClient pushClient)
