@@ -7,7 +7,7 @@ namespace BallSortServer.Services;
 
 public class ClientCollection
 {
-    private Dictionary<string, List<IPushClient>> _clientCollections = new();
+    private readonly Dictionary<string, List<IPushClient>> _clientCollections = new();
     public void Add(string userId, IPushClient pushClient)
     {
         if (!_clientCollections.TryGetValue(userId, out List<IPushClient>? clientCollection))

@@ -18,7 +18,7 @@ public class StateService : IStateReader, IStateUpdater, ISubscriptionsMgr
         _logger = logger;
     }
 
-    private BallSortStateModel GetDefaultState() => new(3, 5, 0, 0);
+    private static BallSortStateModel GetDefaultState() => new(3, 5, 0, 0);
 
     // IStateReader implementation
     public BallSortStateModel GetState(string userId)
