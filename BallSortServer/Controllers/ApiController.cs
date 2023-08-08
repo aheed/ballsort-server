@@ -1,16 +1,19 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BallSortServer.Models;
+using BallSortServer.Services;
 
 namespace BallSortServer.Controllers;
 
 public class ApiController : Controller
 {
     private readonly ILogger<ApiController> _logger;
+    private readonly IStateUpdater _stateUpdater;
 
-    public ApiController(ILogger<ApiController> logger)
+    public ApiController(ILogger<ApiController> logger, IStateUpdater stateUpdater)
     {
         _logger = logger;
+        _stateUpdater = stateUpdater;
     }
 
     public string Get() {
@@ -27,7 +30,8 @@ public class ApiController : Controller
         }
 
         _logger.LogInformation("Got an update request: {cols}", updateMsg.State.NofCols);
-        //return Json("Got it!");
-        return Json(updateMsg);
+        _stateUpdater.UpdateState(updateMsg.State, updateMsg.UserId);
+
+        return Json(updateMsg); //temp
     }
 }

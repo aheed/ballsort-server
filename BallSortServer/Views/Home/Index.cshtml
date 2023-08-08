@@ -14,12 +14,16 @@
         socket = new WebSocket(url);
 
         socket.addEventListener('open', function(event) {
-            addLog('Connected to ' + url);
+            console.log('Websocket opened');
         });
+
         socket.addEventListener('message', function(event) {
-            //addLog('Message from server: ' + event.data);
             console.log('Message from server: ' + event.data);
             mylabel.innerText = event.data;
+        });
+
+        socket.addEventListener('close', function(event) {
+            console.log('Websocket closed');
         });
     }
 
@@ -27,7 +31,7 @@
     
         var message = wsMessage.value;
         socket.send(message);        
-        addLog('Message sent!');
+        console.log('Message sent!');
     }
 
     function addLog(log) {

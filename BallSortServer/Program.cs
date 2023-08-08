@@ -8,7 +8,12 @@ builder.Services.AddSingleton<StateService>();
 builder.Services.AddSingleton<IStateReader>(x => x.GetRequiredService<StateService>());
 builder.Services.AddSingleton<IStateUpdater>(x => x.GetRequiredService<StateService>());
 builder.Services.AddSingleton<ISubscriptionsMgr>(x => x.GetRequiredService<StateService>());
-builder.Services.AddControllersWithViews();
+builder.Services
+    .AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.WriteIndented = true;
+    });
 
 var app = builder.Build();
 
